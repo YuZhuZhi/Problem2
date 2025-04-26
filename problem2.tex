@@ -1,0 +1,233 @@
+\documentclass[10pt,a4paper,twoside]{article}
+
+%%%%%%%%%%%%%%%%%%%%导言部分%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%加载宏包%%%%%%%%%%
+\usepackage[heading=true]{ctex}%引入中文宏包 并使用默认样式（若不使用，无法设置标题样式）
+\usepackage{geometry}%引入宏包：设置页边距
+\usepackage{booktabs}%引入宏包：制作三线表
+\usepackage{graphicx}%引入宏包：插入图片
+\usepackage{amsmath}%引入宏包：拓展latex符号格式
+\usepackage{indentfirst}%引入宏包：设置首行缩进
+\usepackage{lmodern}%引入宏包：消除字体错误
+\usepackage{fontspec}%引入宏包：设置英语字体
+\usepackage{fancyhdr}%引入宏包：设置页眉页脚
+\usepackage{gbt7714}%引入宏包：可将参考文献格式设置为GBT7714
+\usepackage{caption}%引入宏包：设置图标标注
+\usepackage[runin]{abstract}%引入宏包：设置摘要格式同时将摘要标题设置到摘要正文前
+\usepackage[colorlinks,urlcolor=black,linkcolor=black,citecolor=black,hyperfootnotes=false]{hyperref}%引入宏包：设置引用格式,并设置引用方式
+\usepackage{tikz}
+\usetikzlibrary{quantikz2}
+\usetikzlibrary{quotes,angles}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{physics}
+\usepackage{adjustbox}
+\usepackage[justification=centering,labelfont=rm,caption=false]{subfig}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{appendix}
+\usepackage{braket}
+\usepackage{mathrsfs}
+
+%%%%%%%%%%设置%%%%%%%%%%
+%%%%%其他%%%%%
+\geometry{a4paper,left=2cm,right=2cm,top=2.5cm,bottom=2.2cm,headheight=14pt}%【使用A4纸，左页面边距，右页面边距，上页面边距，下页面边距，页眉高度】设置页面边距
+\linespread{1.25}%设置行间距为1.25倍
+\setlength{\parindent}{2em}%设置首行缩进两个字节
+\setmainfont{Times New Roman}%设置英文字体为新罗马字体
+
+%%%%%页眉页脚%%%%%
+\pagestyle{fancy}%启用fancy样式
+\fancyhf{}%清空默认页眉页脚
+\fancyfoot[C]{\thepage}%设置页脚中间为页码
+\fancyhead[L]{\leftmark}%设置页眉左侧为章节标题
+\fancyhead[R]{编程题二}%设置页眉右侧内容为标题
+% \fancyhead[C]{XXX学报}%设置页眉中间内容为“XXX学报”
+\renewcommand{\headrulewidth}{0.2pt}%设置页眉线粗细
+\renewcommand{\footrulewidth}{0pt}%设置页脚线粗细
+
+%%%%%各级标题%%%%%
+\ctexset{section={format={\raggedright \zihao{-4} \mdseries},titleformat={\heiti },beforeskip=10pt,afterskip=5pt,numberformat={\setmainfont{Times New Roman}},aftername=\hspace{6pt}}}%设置一级标题格式：整体格式：左对齐 小四 不加粗声明，标题格式：黑体，前间距10磅，后间距5磅，编号格式：新罗马，编号与标题间距：6磅
+\ctexset{subsection={titleformat={\heiti \zihao{5}  \mdseries},beforeskip=0pt,afterskip=0pt,numberformat={\setmainfont{Times New Roman} \zihao{5}},aftername=\hspace{5pt}}}%设置二级标题格式：标题格式：黑体 五号 不加粗声明，前间距0磅，后间距0磅，编号格式：新罗马 五号，编号与标题间距：5磅
+\ctexset{subsubsection={titleformat={\kaishu \zihao{5} \mdseries},beforeskip=0pt,afterskip=0pt,numberformat={\setmainfont{Times New Roman} \zihao{5}},aftername=\hspace{5pt}}}%设置三级标题格式：标题格式：楷体 五号 不加粗声明，前间距0磅，后间距0磅，编号格式：新罗马 五号，编号与标题间距：5磅
+
+
+%%%%%摘要%%%%%
+\setlength{\absleftindent}{0pt}%设置摘要两端缩进
+\setlength{\absrightindent}{0pt}%设置摘要两端缩进
+\abslabeldelim{:}%摘要二字后加“：”
+\setlength{\abstitleskip}{-2em}%设置摘要标题与摘要内容的间距
+
+
+%%%%%图表标注%%%%%
+\DeclareCaptionFont{songxiaoWu}{\songti \zihao{-5}}%自定义一种字体 宋体 小五 应用于图注
+\DeclareCaptionFont{heixiaoWu}{\heiti \zihao{-5}}%自定义一种字体 黑体 小五 应用于表注
+\captionsetup[figure]{font=songxiaoWu,labelfont=songxiaoWu,labelsep=space,skip=3pt}%设置图注字体、表现形式、上下间距
+\captionsetup[table]{font=heixiaoWu,labelfont=heixiaoWu,labelsep=space,skip=3pt}%设置表注字体、表现形式、上下间距
+\numberwithin{figure}{section}%设置表格按章节编号
+\numberwithin{table}{section}%设置图片按章节编号
+
+%%%%%参考文献%%%%%
+\bibliographystyle{gbt7714-numerical}%设置参考文献格式
+\ctexset{bibname={\heiti \zihao{-4} 参考文献}}%设置“参考文献”为黑体小四
+
+%%%%%目录%%%%%
+%%%方案tocloft%%%
+%\usepackage{tocloft}
+%\renewcommand{\cftbeforetoctitleskip}{0pt}%设置目录上方边距
+%\renewcommand{\cftaftertoctitleskip}{0pt}%设置目录下方边距
+%\renewcommand{\cfttoctitlefont}{\hfill \kaishu \zihao{4}}%设置目录二字格式
+%\renewcommand{\cftaftertoctitle}{\hfill}%设置目录居中
+%\renewcommand{\listfigurename}{图片目录}
+%\renewcommand{\listtablename}{表格目录}
+%\setcounter{tocdepth}{2}%设置目录级数
+
+%%%方案titlesec,titletoc%%%
+%\usepackage{titlesec,titletoc}%引入宏包：设置目录
+%\renewcommand{\contentsname}{\centering 目\quad 录}%设置目录二字的格式
+%\dottedcontents{section}[2em]{}{2em}{2em}%标题级数%标题至左侧距离%预定义标题格式%序号与标题间距%点点的间距
+%\titlecontents{section}[2em]{}{\thecontentslabel[]{2em}}{}{\titlerule*[2ex]{-}\thecontentspage}%标题级数（可为各级标题 也可为图表）%标题距左侧间距%预定义标题格式字体字号%有序号的目录类型%无序号的目录类型%填充与页码格式
+
+%%%%%导言格式%%%%%
+\makeatletter
+% 重定义\@maketitle，去掉标题后的垂直间距
+\renewcommand{\@maketitle}{
+  \newpage
+  \null
+  \begin{center}
+    {\@title \par}%标题
+    \vskip 1em %标题与作者之间的间距
+    {\@author \par}%作者
+    \vskip 0em %作者与日期之间的间距
+    {\@date \par}%日期
+  \end{center}
+  \par %移除默认的\vspace{\baselineskip}
+}
+\makeatother
+
+%%%%%导言内容%%%%%
+\title{\heiti \zihao{-2} 编程题二}%标题内容
+\author{\kaishu \zihao{4} 作者\textsuperscript{1}，作者\textsuperscript{2}}%作者姓名
+\date{{\kaishu \zihao{5} （1.作者详细单位，省 市 邮编；2.作者详细单位，省 市 邮编；）}\\
+\textsuperscript{1}~{\kaishu \zihao{5} 作者详细单位，省 市 邮编；} 
+\textsuperscript{2}~{\kaishu \zihao{5} 作者详细单位，省 市 邮编；}}%将作者单位信息塞入日期栏
+
+
+%%%%%%%%%%%%%%%%%%%%文章部分%%%%%%%%%%%%%%%%%%%%
+\begin{document}%开启文章
+
+%%%%%%%%%%正文%%%%%%%%%%
+%%%%%字体字号%%%%%
+\songti%设置正文字体为宋体
+\zihao{5}%设置正文字号
+
+\maketitle%使导言内容显示
+
+%%%%%或将作者单位信息在后部单独设置并手动调整间距%%%%%
+%\vspace{-5pt}%减小导言与后文的间距
+%设置作者单位
+%\begin{center}
+    %{\kaishu \zihao{5} （1.作者详细单位，省 市 邮编；2.作者详细单位，省 市 邮编；）}\\
+    %\textsuperscript{1}~{\kaishu \zihao{5} 作者详细单位，省 市 邮编；} 
+    %\textsuperscript{2}~{\kaishu \zihao{5} 作者详细单位，省 市 邮编；}
+%\end{center}
+
+%%%%%文章及作者信息脚注%%%%%
+% \renewcommand{\thefootnote}{}%设置脚注标号为空
+% \footnotetext{\zihao{-5} {\heiti 收稿日期：}xxxx-xx-xx}%设置收稿日期脚注
+% \footnotetext{\zihao{-5} {\heiti 作者简介：}{\songti 姓  名(出生年-)，性别，籍贯（注明市县），职称，学位，主要研究方向. E-mail:}}%设置作者信息脚注
+% \footnotetext{\zihao{-5} {\heiti 作者简介：}{\songti 姓  名(出生年-)，性别，籍贯（注明市县），职称，学位，主要研究方向. E-mail:}}%设置作者信息脚注
+
+%%%%%摘要%%%%%
+\renewcommand{\abstractname}{\zihao{-5} \heiti \mdseries 摘\quad 要}
+\begin{abstract}
+    \zihao{-5}
+    摘要内容。概括地陈述论文研究的目的、方法、结果、结论，要求200～300字。应排除本学科领域已成为常识的内容；不要把应在引言中出现的内容写入摘要，不引用参考文献；不要对论文内容作诠释和评论。不得简单重复题名中已有的信息。用第三人称，不使用“本文”、“作者”等作为主语。使用规范化的名词术语，新术语或尚无合适的汉文术语的，可用原文或译出后加括号注明。除了无法变通之外，一般不用数学公式和化学结构式，不出现插图、表格。缩略语、略称、代号，除了相邻专业的读者也能清楚理解的以外，在首次出现时必须加括号说明。结构严谨，表达简明，语义确切。
+    \par \noindent{{\heiti 关键词：}{关键词1；关键词2；关键词3；关键词4}}
+    \par \noindent{{\heiti 中图分类号：}{作者本人填写} \qquad {\heiti 文献标识码：}{A}}
+\end{abstract}
+
+%%%%%英文部分%%%%%
+\begin{center}
+    {\bf \zihao{3} How to use {\LaTeX} to edit an essay elegantly\par\vspace*{10pt}}
+    {\zihao{-4} NAME Name\textsuperscript{1},\ NAME Name\textsuperscript{2}}\\
+    {\zihao{5} (1.Department, City, City Zip Code, China;\ 2.Department, City, City Zip Code, China;)}\\
+    \textsuperscript{1}~{\zihao{5} Department, City, City Zip Code, China;} \
+    \textsuperscript{2}~{\zihao{5} Department, City, City Zip Code, China;} 
+\end{center} 
+\renewcommand{\abstractname}{\zihao{5} \bf Abstract}
+\begin{abstract}
+    \zihao{5}
+    Purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose. Method method method method method method method method method method method method method method method method method method. Result result result result result result result result result result result result result result result result result result result result result result result result result result result. Conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion conclusion.
+    \par \noindent{\textbf{Keywords:}{keyword1; keyword2; keyword3; keyword4}}
+\end{abstract}
+% \qquad 两个空格   \quad 一个空格    \ 三分之一个空格    \;七分之二个空格    \, 六分之一个空格
+
+%%%%%引言部分%%%%%
+\par{引言内容。引言作为论文的开场白，应以简短的篇幅介绍论文的写作背景和目的，以及相关领域内前人所做的工作和研究概况，说明本研究与前人工作的关系，目前研究的热点、存在的问题及作者工作的意义。1、开门见山，不绕圈子。避免大篇幅地讲述历史渊源和立题研究过程。2、言简意赅，突出重点。不应过多叙述同行熟知的及教科书中的常识性内容，确有必要提及他人的研究成果和基本原理时，只需以引用参考文献的形势标出即可。在引言中提示本文的工作和观点时，意思应明确，语言应简练。3、引言的内容不要与摘要雷同，也不是摘要的注释。4、引言最好不要有插图、列表和数学公式。}
+
+%%%%%目录%%%%%
+%\newpage
+%\tableofcontents%章节目录
+%\listoffigures%图片目录
+%\listoftables%表格目录
+%\newpage
+
+%%%%%公式设置%%%%%
+\numberwithin{equation}{section}%配置公式按章节编号
+\setlength{\abovedisplayskip}{2pt}%设置公式前间距
+\setlength{\belowdisplayskip}{2pt}%设置公式后间距
+
+%%%%%%%%%%%%%%%正文%%%%%%%%%%%%%%%
+
+\section{背景}
+
+空气污染是全球性环境问题，对人类健康和生态系统产生了深远的影响。准确评估空气质量并预测污染等级对于制定环境保护政策和改善居民生活质量至关重要。本次比赛旨在利用量子机器学习技术，基于多维度的环境数据，预测空气质量等级，为城市环境管理提供决策支持。
+
+%插入表格（三线表）
+% \begin{table}[htbp]
+%     \centering
+%     \caption{表题}
+%     \begin{tabular}{ccccc}%{{5}{c}}
+
+%         \toprule
+%         {组别} & {物理量1/单位} & {物理量2/单位} & {物理量3/单位} & {物理量4/单位} \\
+%         \midrule
+%         A&{}&{}&{}&{}\\
+%         B&{}&{}&{}&{}\\
+%         C&{}&{}&{}&{}\\
+%         D&{}&{}&{}&{}\\
+%         \bottomrule
+%     \end{tabular}
+% \end{table}
+
+
+%插入图片
+% \begin{figure}[htbp]
+%     \centering 
+%     \includegraphics[height=5.99cm,width=8.25cm]{E:/engineer file/latex/learn1/photo/test.png}
+%     \caption{图注}
+% \end{figure}
+%table和figure为浮动体
+
+
+
+
+
+
+%%%%%列出参考文献%%%%%
+\zihao{-5}%设置参考文献字号
+\bibliography{books}%调用bib文件 加入参考文献
+%知网复制出的latex代码比工大图书馆复制出的latex代码好用
+
+%%%%%%%%%%%%%%%附录部分%%%%%%%%%%%%%%%
+\newpage
+\appendix%设置附录
+\zihao{-5}%设置附录字号
+\section*{附录一：}
+
+
+
+
+\end{document}

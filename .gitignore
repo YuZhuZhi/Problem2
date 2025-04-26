@@ -1,0 +1,7 @@
+*.aux
+*.fls
+*.out
+*.xdv
+*.fdb_latexmk
+*.pyc
+*.synctex.gz
