@@ -28,20 +28,24 @@ class Trainer:
             loss.backward()
             self.optimizer._step()
             prediction = outputs.argmax(dim=1)
+            accuracy = (prediction == self.labels).float().mean().item()
             precision, recall, f1score = metrics.precision_recall_f1_N_score(self.labels, prediction, 4, average="macro")
-            print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item():.6f}, Precision: {precision:.4f}, F1 Score: {f1score:.4f}")
+            print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item():.6f}, Accuracy: {accuracy:.4f}, F1 Score: {f1score:.4f}")
             
-    def test(self, testData: np.ndarray, testLabels: np.ndarray) -> np.ndarray:
+    def test(self, testData: np.ndarray, testLabels: np.ndarray, outputFile: str=None) -> np.ndarray:
         self.model.eval()
         testDataTensor = QTensor(testData, dtype=kfloat32)
         testLabelsTensor = QTensor(testLabels, dtype=pyvqnet.kint64)
         with no_grad():
             outputs = self.model(testDataTensor)
             predictions = outputs.argmax(dim=1)
-            
+            accuracy = (predictions == testLabelsTensor).float().mean().item()
             precision, recall, f1score = metrics.precision_recall_f1_N_score(testLabelsTensor, predictions, 4, average="macro")
-            print(f"Test Precision: {precision}, F1 Score: {f1score}")
+            print(f"Test Accuracy: {accuracy:.4f}, F1 Score: {f1score:.4f}")
             print(get_random_seed())
+            if outputFile is not None:
+                with open(outputFile, "a") as file:
+                    file.write(f"{accuracy:.4f} {f1score:.4f}\n")
             return predictions.numpy()
 #####################################################################################################
 
