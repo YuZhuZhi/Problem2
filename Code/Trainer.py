@@ -2,10 +2,11 @@ import Utils
 import numpy as np
 import pyvqnet
 from pyvqnet.tensor import *
-from pyvqnet.utils import metrics
+from pyvqnet.utils import metrics, get_random_seed, set_random_seed
 
 #####################################################################################################
 INITIAL_LEARNING_RATE = 1e-2
+SEED = 51346
 #####################################################################################################
 
 class Trainer:
@@ -14,7 +15,9 @@ class Trainer:
         self.data = QTensor(data, dtype=kfloat32)
         self.labels = QTensor(labels, dtype=pyvqnet.kint64)
         self.lossFunction = pyvqnet.nn.CrossEntropyLoss()
+        # self.lossFunction = pyvqnet.nn.NLL_Loss()
         self.optimizer = pyvqnet.optim.Adam(self.model.parameters(), lr=INITIAL_LEARNING_RATE)
+        set_random_seed(SEED)
     
     def train(self, epochs: int) -> None:
         self.model.train()
@@ -38,7 +41,7 @@ class Trainer:
             
             precision, recall, f1score = metrics.precision_recall_f1_N_score(testLabelsTensor, predictions, 4, average="macro")
             print(f"Test Precision: {precision}, F1 Score: {f1score}")
-            
+            print(get_random_seed())
             return predictions.numpy()
 #####################################################################################################
 

@@ -17,6 +17,6 @@ if __name__ == "__main__":
     smallMLP = ClassicModel.SmallMLP(inChannels=9, outChannels=4)
     
     classicTrainer = Trainer.Trainer(model=smallMLP, data=trainReader.data, labels=trainReader.labels)
-    classicTrainer.train(epochs=100)
+    classicTrainer.train(epochs=2000)
     classicTrainer.test(testReader.data, testReader.labels)
     
