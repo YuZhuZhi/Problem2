@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  27 APR 2025 16:44
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  27 APR 2025 17:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -907,9 +907,16 @@ Package: appendix 2020/02/08 v1.2c extra appendix facilities
 \c@@pps=\count373
 \c@@ppsavesec=\count374
 \c@@ppsaveapp=\count375
+) (d:/Latex/texlive/2024/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup7
+\symAMSb=\mathgroup8
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ) (d:/Latex/texlive/2024/texmf-dist/tex/latex/braket/braket.sty) (d:/Latex/texlive/2024/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
 Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
-\symrsfs=\mathgroup7
+\symrsfs=\mathgroup9
 )
 
 Package fontspec Info: Font family 'TimesNewRoman(0)' created for font 'Times
@@ -941,26 +948,26 @@ Package fontspec Info: Font family 'TimesNewRoman(0)' created for font 'Times
  (./problem2.aux)
 \openout1 = `problem2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 118.
-LaTeX Font Info:    ... okay on input line 118.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 120.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1001,7 +1008,7 @@ Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 118.
+Package hyperref Info: Link coloring ON on input line 120.
 (./problem2.out) (./problem2.out)
 \@outlinefile=\write4
 \openout4 = `problem2.out'.
@@ -1076,22 +1083,30 @@ Package fontspec Info: Font family 'KaiTi(0)' created for font 'KaiTi' with
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.05249> on input line 125.
+(Font)              <14.05249> on input line 127.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.53937> on input line 125.
+(Font)              <10.53937> on input line 127.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7.52812> on input line 125.
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 125.
+(Font)              <7.52812> on input line 127.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 127.
+ (d:/Latex/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 127.
+ (d:/Latex/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 127.
  (d:/Latex/texlive/2024/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <10.53937> not available
-(Font)              size <10.95> substituted on input line 125.
+(Font)              size <10.95> substituted on input line 127.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <7.52812> not available
-(Font)              size <8> substituted on input line 125.
+(Font)              size <8> substituted on input line 127.
 
 
 Package fontspec Info: Could not resolve font "FangSong/BI" (it probably
@@ -1120,16 +1135,12 @@ Package fontspec Info: Font family 'FangSong(0)' created for font 'FangSong'
 
 ]
 No file problem2.bbl.
-[2]
+[2] [3]
 
-Package caption Warning: Unused \captionsetup[figure] on input line 66.
+Package caption Warning: Unused \captionsetup[table] on input line 69.
 See the caption package documentation for explanation.
 
-
-Package caption Warning: Unused \captionsetup[table] on input line 67.
-See the caption package documentation for explanation.
-
-[3] (./problem2.aux)
+[4] (./problem2.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2022/07/14>
@@ -1143,12 +1154,12 @@ Package rerunfilecheck Info: File `problem2.out' has not changed.
 (rerunfilecheck)             Checksum: 23B25A1455DC89E94999857D81772704;1195.
  ) 
 Here is how much of TeX's memory you used:
- 35349 strings out of 476719
- 776402 string characters out of 5800829
+ 35864 strings out of 476719
+ 787024 string characters out of 5800829
  1965842 words of memory out of 5000000
- 56681 multiletter control sequences out of 15000+600000
- 601760 words of font info for 141 fonts, out of 8000000 for 9000
+ 57180 multiletter control sequences out of 15000+600000
+ 603832 words of font info for 151 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 93i,11n,99p,1951b,435s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,11n,99p,1951b,1029s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on problem2.xdv (3 pages, 38532 bytes).
+Output written on problem2.xdv (4 pages, 109336 bytes).

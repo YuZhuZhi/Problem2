@@ -20,6 +20,7 @@
 \usetikzlibrary{quotes,angles}
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{positioning}
 \usepackage{physics}
 \usepackage{adjustbox}
 \usepackage[justification=centering,labelfont=rm,caption=false]{subfig}
@@ -27,6 +28,7 @@
 \usepackage{enumitem}
 \usepackage{bm}
 \usepackage{appendix}
+\usepackage{amsfonts}
 \usepackage{braket}
 \usepackage{mathrsfs}
 
@@ -228,6 +230,63 @@
 \subsection{算法原理}
 
 \subsection{实现细节}
+
+我们实现的一个MLP网络结构如图\ref{fig:MLP}所示。该网络包含一个输入层、两个隐藏层和一个输出层。输入层有9个节点，分别对应9个特征；第一个隐藏层有8个节点，第二个隐藏层有6个节点；输出层有4个节点，分别对应四类标签。每一层的神经元之间是全连接的。
+
+\begin{figure}[tb]
+    \centering 
+    \begin{tikzpicture}[
+        neuron/.style={circle, draw=black, minimum size=5mm, inner sep=0},
+        >=stealth,
+        node distance=1.5cm
+    ]
+        % 定义层参数
+        \def\layers{
+            Input/9/0, 
+            Hidden1/8/3, 
+            Hidden2/6/6, 
+            Output/4/9
+        }
+        
+        % 计算最大高度（用于居中对齐）
+        \pgfmathsetmacro{\maxheight}{max(9,8,6,4)*0.8}
+        
+        % 绘制神经元和标签
+        \foreach \layername/\layercount/\x in \layers {
+            % 绘制神经元（垂直居中）
+            \foreach \i in {1,...,\layercount} {
+                \node[neuron] (\layername-\i) at (\x, {\i*0.8 - \layercount*0.4 - 0.4}) {};
+            }
+            
+            % 记录最下方神经元位置（第一列）
+            \ifnum\x=0
+                \coordinate (labelanchor) at (0, {-\layercount*0.4 - 0.6});
+            \fi
+            
+            % 绘制标签（与第一列底部对齐）
+            \node[anchor=north, align=center] at (\x, {-\layercount*0.4 - 0.6}) {\layername\\(\layercount\ 节点)};
+        }
+    
+        % 绘制全连接线
+        \foreach \i in {1,...,9}{
+            \foreach \j in {1,...,8}{
+                \draw[->, gray!80] (Input-\i) -- (Hidden1-\j);
+            }
+        }
+        \foreach \i in {1,...,8}{
+            \foreach \j in {1,...,6}{
+                \draw[->, gray!80] (Hidden1-\i) -- (Hidden2-\j);
+            }
+        }
+        \foreach \i in {1,...,6}{
+            \foreach \j in {1,...,4}{
+                \draw[->, gray!80] (Hidden2-\i) -- (Output-\j);
+            }
+        }
+    \end{tikzpicture}	
+    \caption{MLP网络结构}
+    \label{fig:MLP}
+\end{figure}
 
 \subsection{性能评估}
 
