@@ -80,6 +80,32 @@ class CSVReader:
     
 #####################################################################################################
 
+class Math:
+    def normalize(data: np.ndarray) -> np.ndarray:
+        """
+        按列归一化数据（每个特征独立归一化到[0,1]）
+        参数:
+            data: 二维数组，形状为 (n_samples, n_features)，每列代表一个特征
+        返回:
+            归一化后的数组，形状与输入相同
+        """
+        if data is None or data.size == 0:
+            raise ValueError("输入数据不能为空！")
+        
+        if data.ndim != 2:
+            raise ValueError("输入数据必须是二维数组（n_samples, n_features）")
+        
+        minVal = np.nanmin(data, axis=0, keepdims=True)
+        maxVal = np.nanmax(data, axis=0, keepdims=True)
+        rangeVal = maxVal - minVal
+        rangeVal[rangeVal == 0] = 1.0  # 避免除以零
+        
+        normalizedData = (data - minVal) / rangeVal
+        normalizedData[np.isnan(data)] = np.nan
+        return normalizedData
+
+#####################################################################################################
+
 if __name__ == "__main__":
     filePath = "Data/train_data.csv"
     trainReader = CSVReader(filePath)

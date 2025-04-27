@@ -12,12 +12,12 @@ SEED = 51346
 class Trainer:
     def __init__(self, model: pyvqnet.nn.Module, data: np.ndarray, labels: np.ndarray) -> None:
         self.model = model
-        self.data = QTensor(data, dtype=kfloat32)
+        self.data = QTensor(Utils.Math.normalize(data), dtype=kfloat32)
         self.labels = QTensor(labels, dtype=pyvqnet.kint64)
         self.lossFunction = pyvqnet.nn.CrossEntropyLoss()
         # self.lossFunction = pyvqnet.nn.NLL_Loss()
         self.optimizer = pyvqnet.optim.Adam(self.model.parameters(), lr=INITIAL_LEARNING_RATE)
-        set_random_seed(SEED)
+        # set_random_seed(SEED)
     
     def train(self, epochs: int) -> None:
         self.model.train()
@@ -34,7 +34,7 @@ class Trainer:
             
     def test(self, testData: np.ndarray, testLabels: np.ndarray, outputFile: str=None) -> np.ndarray:
         self.model.eval()
-        testDataTensor = QTensor(testData, dtype=kfloat32)
+        testDataTensor = QTensor(Utils.Math.normalize(testData), dtype=kfloat32)
         testLabelsTensor = QTensor(testLabels, dtype=pyvqnet.kint64)
         with no_grad():
             outputs = self.model(testDataTensor)

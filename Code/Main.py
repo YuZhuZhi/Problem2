@@ -17,7 +17,7 @@ if __name__ == "__main__":
     smallResNet = ClassicModel.SmallResNet(inChannels=9, outChannels=4)
     smallMLP = ClassicModel.SmallMLP(inChannels=9, outChannels=4)
     
-    classicTrainer = Trainer.Trainer(model=smallMLP, data=trainReader.data, labels=trainReader.labels)
-    classicTrainer.train(epochs=200)
+    classicTrainer = Trainer.Trainer(model=smallResNet, data=trainReader.data, labels=trainReader.labels)
+    classicTrainer.train(epochs=1000)
     classicTrainer.test(testReader.data, testReader.labels, outputFile=OUTPUT_PATH)
     
