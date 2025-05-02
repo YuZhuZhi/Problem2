@@ -2,6 +2,7 @@ import csv
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+import matplotlib.pyplot as plt
 import os
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -103,6 +104,46 @@ class Math:
         normalizedData = (data - minVal) / rangeVal
         normalizedData[np.isnan(data)] = np.nan
         return normalizedData
+
+#####################################################################################################
+
+class Draw:
+    @staticmethod
+    def curve(x: np.ndarray, y: np.ndarray, title: str, xLabel: str, yLabel: str) -> None:
+        """
+        绘制曲线图，适用于单个数据集。
+        参数:
+            x: x轴数据
+            y: y轴数据
+            title: 图表标题
+        """
+        
+        plt.plot(x, y, label=title)
+        plt.title(title)
+        plt.xlabel(xLabel)
+        plt.ylabel(yLabel)
+        plt.grid()
+        plt.show()
+    
+    @staticmethod
+    def grid(shape: tuple[int, int], x: list[np.ndarray], y: list[np.ndarray], title: list[str], xLabel: list[str], yLabel: list[str]) -> None:
+        """
+        绘制网格图，适用于多张子图的布局。
+        参数:
+            shape: 网格形状 (rows, cols)
+            x: x轴数据列表，每个元素是一个一维数组
+            y: y轴数据列表，每个元素是一个一维数组
+            title: 每个子图的标题列表
+        """
+        for i in range(min(shape[0] * shape[1], len(x), len(y), len(title))):
+            plt.subplot(shape[0], shape[1], i + 1)
+            plt.plot(x[i], y[i])
+            plt.title(title[i])
+            plt.xlabel(xLabel[i])
+            plt.ylabel(yLabel[i])
+            plt.grid()
+        
+        plt.show()
 
 #####################################################################################################
 

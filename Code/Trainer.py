@@ -18,7 +18,8 @@ class Trainer:
         # self.lossFunction = pyvqnet.nn.NLL_Loss()
         self.optimizer = pyvqnet.optim.Adam(self.model.parameters(), lr=INITIAL_LEARNING_RATE)
         # set_random_seed(SEED)
-    
+        self.trainLoss, self.trainAcc = [], []
+
     def train(self, epochs: int) -> None:
         self.model.train()
         for epoch in range(epochs):
@@ -29,6 +30,8 @@ class Trainer:
             self.optimizer._step()
             prediction = outputs.argmax(dim=1)
             accuracy = (prediction == self.labels).float().mean().item()
+            self.trainLoss.append(loss.item())
+            self.trainAcc.append(accuracy)
             precision, recall, f1score = metrics.precision_recall_f1_N_score(self.labels, prediction, 4, average="macro")
             print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item():.6f}, Accuracy: {accuracy:.4f}, F1 Score: {f1score:.4f}")
             
