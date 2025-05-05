@@ -104,6 +104,28 @@ class Math:
         normalizedData = (data - minVal) / rangeVal
         normalizedData[np.isnan(data)] = np.nan
         return normalizedData
+    
+    @staticmethod
+    def divide(data: np.ndarray, labels: np.ndarray, ratio: float) -> tuple:
+        """
+        随机划分训练集和验证集
+        参数:
+            data: 输入特征数据 (n_samples, n_features)
+            labels: 对应标签 (n_samples,)
+            ratio: 验证集占比 (0 < ratio < 1)
+        返回:
+            (训练数据, 训练标签, 验证数据, 验证标签)
+        """
+        if ratio <= 0 or ratio >= 1:
+            raise ValueError("ratio必须在0和1之间")
+
+        indices = np.random.permutation(len(data))
+        split = int(len(data) * ratio)
+        
+        return (data[indices[split:]], 
+                labels[indices[split:]], 
+                data[indices[:split]], 
+                labels[indices[:split]])
 
 #####################################################################################################
 
