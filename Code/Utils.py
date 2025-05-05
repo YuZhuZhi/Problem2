@@ -118,14 +118,29 @@ class Math:
         """
         if ratio <= 0 or ratio >= 1:
             raise ValueError("ratio必须在0和1之间")
-
-        indices = np.random.permutation(len(data))
-        split = int(len(data) * ratio)
         
-        return (data[indices[split:]], 
-                labels[indices[split:]], 
-                data[indices[:split]], 
-                labels[indices[:split]])
+        # 验证输入形状
+        assert data.ndim == 2, f"数据必须是二维数组，当前维度: {data.ndim}"
+        assert labels.ndim == 1, f"标签必须是一维数组，当前维度: {labels.ndim}"
+        assert len(data) == len(labels), "数据与标签数量不匹配"
+
+        import pyvqnet.tensor as tensor
+        
+        # 转换为numpy处理，避免Qtensor的一些问题
+        data_np = data.numpy()
+        labels_np = labels.numpy()
+        
+        # 随机划分
+        indices = np.random.permutation(len(data_np))
+        split = int(len(indices) * ratio)
+        
+        # 划分数据
+        train_data = tensor.QTensor(data_np[indices[split:]], dtype=data.dtype)
+        train_labels = tensor.QTensor(labels_np[indices[split:]], dtype=labels.dtype)
+        val_data = tensor.QTensor(data_np[indices[:split]], dtype=data.dtype)
+        val_labels = tensor.QTensor(labels_np[indices[:split]], dtype=labels.dtype)
+        
+        return train_data, train_labels, val_data, val_labels
 
 #####################################################################################################
 
