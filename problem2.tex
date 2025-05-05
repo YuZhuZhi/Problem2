@@ -31,7 +31,13 @@
 \usepackage{amsfonts}
 \usepackage{braket}
 \usepackage{mathrsfs}
-
+\usepackage{algorithm} % 加载 algorithm 包
+\usepackage{algpseudocode} % 加载 algpseudocode 包
+\usepackage{amsmath} % 加载 amsmath 包
+\usepackage{amssymb} % 加载 amssymb 包
+\usepackage{braket} % 加载 braket 包，用于 bra-ket 表示法
+\usepackage{smartdiagram}
+\usesmartdiagramlibrary{additions}
 %%%%%%%%%%设置%%%%%%%%%%
 %%%%%其他%%%%%
 \geometry{a4paper,left=2cm,right=2cm,top=2.5cm,bottom=2.2cm,headheight=14pt}%【使用A4纸，左页面边距，右页面边距，上页面边距，下页面边距，页眉高度】设置页面边距
@@ -228,46 +234,43 @@
 \section{经典神经网络模型}
 
 \subsection{算法原理}
-我们实现了两种经典神经网络结构作为基准模型：
-\begin{itemize}
-\item \textbf{输入维度适配}：将9维空气质量特征（温度、湿度、PM2.5等）归一化至统一尺度，消除量纲影响
+我们实现了两种经典神经网络结构作为基准模型：残差网络和多层感知器。
 
-\item \textbf{标签编码}：将4类空气质量标签（Good/Moderate/Poor/Hazardous）映射为数值型0-3
-
-\item \textbf{数据流设计}：通过CSVReader类实现自动化数据加载与统计验证
-\end{itemize}
-\subsubsection{残差网络(SmallResNet)}
+\subsubsection{SmallResNet（小型残差网络）}
+残差网络是一种深度学习架构，主要用于解决深层神经网络中的梯度消失和梯度爆炸问题。它的核心思想是引入“残差学习”机制，通过残差连接（Skip Connection）让网络中的信号可以绕过某些层直接传播。
 \begin{itemize}
-    \item \textbf{残差连接}：通过跳跃连接解决梯度消失问题
-    \begin{equation}
-        y = \mathcal{F}(x) + x
-    \end{equation}
-    
-    \item \textbf{网络结构}：
-    \begin{itemize}
-        \item 输入层：9维$\rightarrow$8维全连接
-        \item 残差块：8维$\xrightarrow{ReLU}$4维$\rightarrow$8维
-        \item 输出层：8维$\rightarrow$4维+Softmax
-    \end{itemize}
-    
-\end{itemize}
+\item \textbf{残差块（Residual Block）}:
+\[
+\text{output} = \text{ReLU}(\text{Linear}_2(\text{ReLU}(\text{Linear}_1(x))) + x)
+\]
 
-\subsubsection{多层感知器(SmallMLP)} 
-\begin{itemize}
-    \item \textbf{前馈结构}：
-    \begin{equation}
-        \mathbf{h}_l = \text{ReLU}(\mathbf{W}_l\mathbf{h}_{l-1} + \mathbf{b}_l)
-    \end{equation}
-    
-    \item \textbf{网络结构}：
-    \begin{itemize}
-        \item 输入层：9维$\rightarrow$8维
-        \item 隐藏层：8维$\rightarrow$6维
-        \item 输出层：6维$\rightarrow$4维+Softmax
-    \end{itemize}
+\item \textbf{主网络}:
+\[
+\begin{aligned}
+x_1 &= \text{ReLU}(\text{Linear}_{\text{input}}(x)) \\
+x_2 &= \text{BasicBlock}(x_1) \\
+x_3 &= \text{Linear}_{\text{output}}(x_2) \\
+\text{output} &= \text{Softmax}(x_3)
+\end{aligned}
+\]
 
 \end{itemize}
+\subsubsection{SmallMLP（小型多层感知机）}
+多层感知机是一种简单的神经网络结构，由多个全连接层组成，通常用于分类和回归任务。它的核心思想是通过逐层的线性变换和非线性激活函数来学习输入数据的复杂映射关系。
 
+\begin{itemize}
+\item \textbf{多层感知机（MLP）}:
+
+\[
+\begin{aligned}
+x_1 &= \text{ReLU}(\text{Linear}_1(x)) \\
+x_2 &= \text{ReLU}(\text{Linear}_2(x_1)) \\
+x_3 &= \text{Linear}_{\text{output}}(x_2) \\
+\text{output} &= \text{Softmax}(x_3)
+\end{aligned}
+\]
+
+\end{itemize}
 \subsection{实现细节}
 
 我们实现的一个MLP网络结构如图\ref{fig:MLP}所示。该网络包含一个输入层、两个隐藏层和一个输出层。输入层有9个节点，分别对应9个特征；第一个隐藏层有8个节点，第二个隐藏层有6个节点；输出层有4个节点，分别对应四类标签。每一层的神经元之间是全连接的。
@@ -334,56 +337,93 @@
 \section{量子机器学习模型}
 
 \subsection{算法原理}
-QMLP架构包含三大创新模块：
+\subsubsection{量子数据编码}
+采用线性旋转编码将经典数据映射到量子态：
+\begin{equation}
+S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma_x^{(k)}/2\right)
+\end{equation}
+其中$\sigma_x^{(k)}$为第$k$个量子比特的Pauli-X算符。
 
-\subsubsection{容错输入编码}
+\begin{figure}[H]
+\centering
+\begin{quantikz}
+\lstick{$\ket{0}$} & \gate{RX(x_1)} & \qw \\
+\lstick{$\ket{0}$} & \gate{RX(x_2)} & \qw \\
+& \vdots & \\
+\lstick{$\ket{0}$} & \gate{RX(x_N)} & \qw
+\end{quantikz}
+\caption{量子数据编码电路}
+\label{fig:qencode}
+\end{figure}
+
+\subsubsection{变分量子电路}
+\begin{equation}
+U(\theta) = \prod_{l=1}^L U_l(\theta_l)R_l(\mathbf{x})
+\end{equation}
+其中：
 \begin{itemize}
-    \item 单比特旋转门实现线性编码：
-    \begin{equation}
-        S(\mathbf{x}_i) = \bigotimes_{k=0}^{n-1} RX(x_i^k)
-    \end{equation}
-    
-    \item 错误隔离机制：量子门错误仅影响单个量子比特
+\item $U_l(\theta_l)$：参数化量子门层
+\item $R_l(\mathbf{x})$：重上传单元
 \end{itemize}
 
-\subsubsection{可调非线性单元}
+\subsubsection{动态非线性机制}
+通过可调重上传单元(RUU)引入非线性：
+\begin{equation}
+R_l(\mathbf{x}) = \exp\left(-i f_l(\mathbf{x}) \sigma_j^{(k)}/2\right), \quad j \in \{x,y,z\}
+\end{equation}
+典型配置包括：
 \begin{itemize}
-    \item 动态重上传结构：
-    \begin{equation}
-        R_i(\mathbf{x}) = \text{RX}(\text{ReLU}(\mathbf{x}))
-    \end{equation}
-    
-    \item 支持多种非线性组合模式：
-    \begin{itemize}
-        \item RX/RY/RZ旋转门混合
-        \item 经典非线性函数嵌入
-    \end{itemize}
+\item $RX(\text{ReLU}(\mathbf{x}))$
+\item $RY(\mathbf{x}^2)$
+\item $RZ(\tanh(\mathbf{x}))$
 \end{itemize}
 
-\subsubsection{参数化纠缠层} 
-\begin{itemize}
-    \item 可训练双比特门：
-    \begin{equation}
-        U(\theta) = \prod_{k=1}^L \text{CRX}(\theta_k)
-    \end{equation}
-    
-    \item 动态纠缠调控：相比固定CNOT门减少$3\times$参数
-\end{itemize}
 
-\begin{table}[H]
+\subsubsection{参数化纠缠层}
+采用可训练的两比特门实现自适应纠缠：
+\begin{equation}
+CRX(\theta) = \begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & \cos\theta/2 & -i\sin\theta/2 \\
+0 & 0 & -i\sin\theta/2 & \cos\theta/2 
+\end{pmatrix}
+\end{equation}
+
+\begin{figure}[H]
+\centering
+\begin{quantikz}
+\lstick{$\ket{\psi_1}$} & \ctrl{1} & \gate{RX(\theta_1)} & \qw \\
+\lstick{$\ket{\psi_2}$} & \targ{} & \gate{RY(\theta_2)} & \qw
+\end{quantikz}
+\caption{参数化纠缠层电路}
+\label{fig:entangle}
+\end{figure}
+\begin{algorithm}
+    \caption{QMLP训练流程}
+    \begin{algorithmic}[1]
+    \State 初始化参数$\{\theta_l\}_{l=1}^L$和$\{f_l\}_{l=1}^L$
+    \For{每个训练epoch}
+        \State 编码输入：$\ket{\phi_0} = S(\mathbf{x})\ket{0}^{\otimes N}$
+        \State 量子态演化：$\ket{\phi_L} = \prod_{l=1}^L U_l(\theta_l) R_l(f_l) \ket{\phi_0}$
+        \State 测量期望值：$\langle Z\rangle_i = \bra{\phi_L} Z_i \ket{\phi_L}$
+        \State 计算损失：$\mathcal{L} = -\sum_c y_c \log p_c$
+        \State 通过参数偏移规则更新参数
+    \EndFor
+    \end{algorithmic}
+\end{algorithm}
+\begin{figure}[htbp]
     \centering
-    \caption{QMLP量子优势}
-    \begin{tabular}{lc}
-        \toprule
-        指标 & 提升幅度 \\
-        \midrule
-        参数量 & 减少3$\times$ \\
-        量子门数量 & 减少2$\times$ \\
-        噪声鲁棒性 & 错误率降低30\% \\
-        分类准确率 & 提高10\% \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \smartdiagram[flow diagram:horizontal]{
+        输入$\mathbf{x}$,
+        线性编码,
+        \shortstack{变分层1\\\footnotesize(RUU非线性)},
+        参数化纠缠,
+        \shortstack{变分层2\\\footnotesize(输出测量)}
+    }
+    \caption{QMLP算法流程图}
+    \label{fig:qmlp_flow_smart}
+    \end{figure}
 \subsection{实现细节}
 
 \subsection{性能评估}
@@ -431,7 +471,7 @@ QMLP架构包含三大创新模块：
 
 %%%%%列出参考文献%%%%%
 \zihao{-5}%设置参考文献字号
-\bibliography{refs}%调用bib文件 加入参考文献
+\bibliography{books}%调用bib文件 加入参考文献
 %知网复制出的latex代码比工大图书馆复制出的latex代码好用
 
 %%%%%%%%%%%%%%%附录部分%%%%%%%%%%%%%%%
