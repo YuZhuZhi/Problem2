@@ -272,9 +272,6 @@ x_3 &= \text{Linear}_{\text{output}}(x_2) \\
 
 \end{itemize}
 \subsection{实现细节}
-
-我们实现的一个MLP网络结构如图\ref{fig:MLP}所示。该网络包含一个输入层、两个隐藏层和一个输出层。输入层有9个节点，分别对应9个特征；第一个隐藏层有8个节点，第二个隐藏层有6个节点；输出层有4个节点，分别对应四类标签。每一层的神经元之间是全连接的。
-
 \begin{figure}[tb]
     \centering 
     \begin{tikzpicture}[
@@ -329,6 +326,9 @@ x_3 &= \text{Linear}_{\text{output}}(x_2) \\
     \caption{MLP网络结构}
     \label{fig:MLP}
 \end{figure}
+我们实现的一个MLP网络结构如图\ref{fig:MLP}所示。该网络包含一个输入层、两个隐藏层和一个输出层。输入层有9个节点，分别对应9个特征；第一个隐藏层有8个节点，第二个隐藏层有6个节点；输出层有4个节点，分别对应四类标签。每一层的神经元之间是全连接的。
+
+
 
 \subsection{性能评估}
 

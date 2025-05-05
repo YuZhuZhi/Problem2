@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.14)  6 MAY 2025 02:16
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.14)  6 MAY 2025 02:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1277,8 +1277,7 @@ Package fontspec Info:
 (fontspec)             Roman/BI/OT:script=latn;language=dflt;mapping=tex-text;"
 
 
-
-No file problem2.aux.
+ (./problem2.aux)
 \openout1 = `problem2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 126.
@@ -1301,6 +1300,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 126.
 LaTeX Font Info:    ... okay on input line 126.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 126.
 LaTeX Font Info:    ... okay on input line 126.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1341,11 +1341,9 @@ Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package hyperref Info: Link coloring ON on input line 126.
+(./problem2.out) (./problem2.out)
 \@outlinefile=\write4
 \openout4 = `problem2.out'.
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
 
 
 Package fontspec Info: 
@@ -1454,6 +1452,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7.52812> on input line 133.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 133
 .
+
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
@@ -1520,9 +1519,6 @@ LaTeX Font Warning: Font shape `TU/STSong(1)/b/n' undefined
 (Font)              using `TU/STSong(1)/m/n' instead on input line 242.
 
 
-LaTeX Warning: Reference `fig:MLP' on page 2 undefined on input line 276.
-
-
 
 [2]
 
@@ -1566,26 +1562,14 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `problem2.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `problem2.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  DD885F5F1FF626BB9FA759CA1B821FB2;2034.
+Package rerunfilecheck Info: File `problem2.out' has not changed.
+(rerunfilecheck)             Checksum: DD885F5F1FF626BB9FA759CA1B821FB2;2034.
  ) 
 Here is how much of TeX's memory you used:
- 37956 strings out of 473832
- 838016 string characters out of 5729481
- 1320140 words of memory out of 5000000
- 60254 multiletter control sequences out of 15000+600000
+ 37970 strings out of 473832
+ 838211 string characters out of 5729481
+ 1321496 words of memory out of 5000000
+ 60262 multiletter control sequences out of 15000+600000
  624369 words of font info for 180 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  93i,18n,114p,1933b,1476s stack positions out of 10000i,1000n,20000p,200000b,200000s
