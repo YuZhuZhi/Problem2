@@ -228,6 +228,45 @@
 \section{经典神经网络模型}
 
 \subsection{算法原理}
+我们实现了两种经典神经网络结构作为基准模型：
+\begin{itemize}
+\item \textbf{输入维度适配}：将9维空气质量特征（温度、湿度、PM2.5等）归一化至统一尺度，消除量纲影响
+
+\item \textbf{标签编码}：将4类空气质量标签（Good/Moderate/Poor/Hazardous）映射为数值型0-3
+
+\item \textbf{数据流设计}：通过CSVReader类实现自动化数据加载与统计验证
+\end{itemize}
+\subsubsection{残差网络(SmallResNet)}
+\begin{itemize}
+    \item \textbf{残差连接}：通过跳跃连接解决梯度消失问题
+    \begin{equation}
+        y = \mathcal{F}(x) + x
+    \end{equation}
+    
+    \item \textbf{网络结构}：
+    \begin{itemize}
+        \item 输入层：9维$\rightarrow$8维全连接
+        \item 残差块：8维$\xrightarrow{ReLU}$4维$\rightarrow$8维
+        \item 输出层：8维$\rightarrow$4维+Softmax
+    \end{itemize}
+    
+\end{itemize}
+
+\subsubsection{多层感知器(SmallMLP)} 
+\begin{itemize}
+    \item \textbf{前馈结构}：
+    \begin{equation}
+        \mathbf{h}_l = \text{ReLU}(\mathbf{W}_l\mathbf{h}_{l-1} + \mathbf{b}_l)
+    \end{equation}
+    
+    \item \textbf{网络结构}：
+    \begin{itemize}
+        \item 输入层：9维$\rightarrow$8维
+        \item 隐藏层：8维$\rightarrow$6维
+        \item 输出层：6维$\rightarrow$4维+Softmax
+    \end{itemize}
+
+\end{itemize}
 
 \subsection{实现细节}
 
@@ -295,7 +334,56 @@
 \section{量子机器学习模型}
 
 \subsection{算法原理}
+QMLP架构包含三大创新模块：
 
+\subsubsection{容错输入编码}
+\begin{itemize}
+    \item 单比特旋转门实现线性编码：
+    \begin{equation}
+        S(\mathbf{x}_i) = \bigotimes_{k=0}^{n-1} RX(x_i^k)
+    \end{equation}
+    
+    \item 错误隔离机制：量子门错误仅影响单个量子比特
+\end{itemize}
+
+\subsubsection{可调非线性单元}
+\begin{itemize}
+    \item 动态重上传结构：
+    \begin{equation}
+        R_i(\mathbf{x}) = \text{RX}(\text{ReLU}(\mathbf{x}))
+    \end{equation}
+    
+    \item 支持多种非线性组合模式：
+    \begin{itemize}
+        \item RX/RY/RZ旋转门混合
+        \item 经典非线性函数嵌入
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{参数化纠缠层} 
+\begin{itemize}
+    \item 可训练双比特门：
+    \begin{equation}
+        U(\theta) = \prod_{k=1}^L \text{CRX}(\theta_k)
+    \end{equation}
+    
+    \item 动态纠缠调控：相比固定CNOT门减少$3\times$参数
+\end{itemize}
+
+\begin{table}[H]
+    \centering
+    \caption{QMLP量子优势}
+    \begin{tabular}{lc}
+        \toprule
+        指标 & 提升幅度 \\
+        \midrule
+        参数量 & 减少3$\times$ \\
+        量子门数量 & 减少2$\times$ \\
+        噪声鲁棒性 & 错误率降低30\% \\
+        分类准确率 & 提高10\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 \subsection{实现细节}
 
 \subsection{性能评估}
@@ -343,7 +431,7 @@
 
 %%%%%列出参考文献%%%%%
 \zihao{-5}%设置参考文献字号
-\bibliography{books}%调用bib文件 加入参考文献
+\bibliography{refs}%调用bib文件 加入参考文献
 %知网复制出的latex代码比工大图书馆复制出的latex代码好用
 
 %%%%%%%%%%%%%%%附录部分%%%%%%%%%%%%%%%
