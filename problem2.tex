@@ -16,6 +16,8 @@
 \usepackage[runin]{abstract}%引入宏包：设置摘要格式同时将摘要标题设置到摘要正文前
 \usepackage[colorlinks,urlcolor=black,linkcolor=black,citecolor=black,hyperfootnotes=false]{hyperref}%引入宏包：设置引用格式,并设置引用方式
 \usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{multirow}
 \usetikzlibrary{quantikz2}
 \usetikzlibrary{quotes,angles}
 \usetikzlibrary{calc}
@@ -331,7 +333,25 @@ x_3 &= \text{Linear}_{\text{output}}(x_2) \\
 
 
 \subsection{性能评估}
+使用残差网络与多层感知机对数据集进行训练，得到如下所示实验结果
 
+\begin{table}[H]
+\centering
+\caption{Training Results of Using Data Augmentation}
+\label{tab:training_results_aug}
+\begin{tabular}{cccc}
+    \toprule
+    \textbf{Epoch} & \textbf{Scheduler} & \textbf{Train Accuracy} & \textbf{Valid Accuracy} \\
+    \midrule
+    \multirow{2}{*}{50} & SmallMLP & 87.20\% & 85.60\% \\
+     & SmallResNet & 87.23\% & 85.60\% \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+根据实验结果可知在固定参数大小下，经典的神经网络模型ResNet与MLP的实验精度基本一样，使用更复杂的ResNet模型对实验的结果精度并未产生较大提升。从模型理论上看，由于更复杂的模型(ResNet)在提出的时候往往是解决增加模型参数却不能极大提高准确率的问题，而在该任务中所用经典参数较少，并未达到MLP的模型性能极限，因此使用ResNet并未提升较大精度。
+
+由以上实验分析，我们可以提出如下假设：在固定参数下，存在经典模型并未超出其性能极限，即在固定参数下更改模型并不能提升预测精度。在此假设下，我们希望存在某种模型能够在原有经典模型的基础上，能进一步较大提升模型的预测精度，从而减少模型的参数量，进而提高模型的计算效率。
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{量子机器学习模型}
