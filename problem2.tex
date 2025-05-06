@@ -236,44 +236,41 @@
 \section{经典神经网络模型}
 
 \subsection{算法原理}
+
 我们实现了两种经典神经网络结构作为基准模型：残差网络和多层感知器。
 
-\subsubsection{SmallResNet（小型残差网络）}
-残差网络是一种深度学习架构，主要用于解决深层神经网络中的梯度消失和梯度爆炸问题。它的核心思想是引入“残差学习”机制，通过残差连接（Skip Connection）让网络中的信号可以绕过某些层直接传播。
-\begin{itemize}
-\item \textbf{残差块（Residual Block）}:
-\[
-\text{output} = \text{ReLU}(\text{Linear}_2(\text{ReLU}(\text{Linear}_1(x))) + x)
-\]
-
-\item \textbf{主网络}:
-\[
-\begin{aligned}
-x_1 &= \text{ReLU}(\text{Linear}_{\text{input}}(x)) \\
-x_2 &= \text{BasicBlock}(x_1) \\
-x_3 &= \text{Linear}_{\text{output}}(x_2) \\
-\text{output} &= \text{Softmax}(x_3)
-\end{aligned}
-\]
-
-\end{itemize}
 \subsubsection{SmallMLP（小型多层感知机）}
+
 多层感知机是一种简单的神经网络结构，由多个全连接层组成，通常用于分类和回归任务。它的核心思想是通过逐层的线性变换和非线性激活函数来学习输入数据的复杂映射关系。
 
 \begin{itemize}
-\item \textbf{多层感知机（MLP）}:
-
-\[
-\begin{aligned}
-x_1 &= \text{ReLU}(\text{Linear}_1(x)) \\
-x_2 &= \text{ReLU}(\text{Linear}_2(x_1)) \\
-x_3 &= \text{Linear}_{\text{output}}(x_2) \\
-\text{output} &= \text{Softmax}(x_3)
-\end{aligned}
-\]
-
+    \item \textbf{多层感知机（MLP）}:
+    $$\begin{aligned}
+        x_1 &= \text{ReLU}(\text{Linear}_1(x)) \\
+        x_2 &= \text{ReLU}(\text{Linear}_2(x_1)) \\
+        x_3 &= \text{Linear}_{\text{output}}(x_2) \\
+        \text{output} &= \text{Softmax}(x_3)
+    \end{aligned}$$
 \end{itemize}
+
+\subsubsection{SmallResNet（小型残差网络）}
+
+残差网络是一种深度学习架构，主要用于解决深层神经网络中的梯度消失和梯度爆炸问题。它的核心思想是引入“残差学习”机制，通过残差连接（Skip Connection）让网络中的信号可以绕过某些层直接传播。
+
+\begin{itemize}
+    \item \textbf{残差块（Residual Block）}:
+    $$\text{output} = \text{ReLU}(\text{Linear}_2(\text{ReLU}(\text{Linear}_1(x))) + x)$$
+    \item \textbf{主网络}:
+    $$\begin{aligned}
+        x_1 &= \text{ReLU}(\text{Linear}_{\text{input}}(x)) \\
+        x_2 &= \text{BasicBlock}(x_1) \\
+        x_3 &= \text{Linear}_{\text{output}}(x_2) \\
+        \text{output} &= \text{Softmax}(x_3)
+    \end{aligned}$$
+\end{itemize}
+
 \subsection{实现细节}
+
 \begin{figure}[tb]
     \centering 
     \begin{tikzpicture}[
@@ -325,100 +322,181 @@ x_3 &= \text{Linear}_{\text{output}}(x_2) \\
             }
         }
     \end{tikzpicture}	
-    \caption{MLP网络结构}
-    \label{fig:MLP}
+    \caption{smallMLP网络结构}
+    \label{fig:smallMLP}
 \end{figure}
-我们实现的一个MLP网络结构如图\ref{fig:MLP}所示。该网络包含一个输入层、两个隐藏层和一个输出层。输入层有9个节点，分别对应9个特征；第一个隐藏层有8个节点，第二个隐藏层有6个节点；输出层有4个节点，分别对应四类标签。每一层的神经元之间是全连接的。
+
+我们实现的一个MLP网络结构如图\ref{fig:smallMLP}所示，由于其规模较小，称为smallMLP。该网络包含一个输入层、两个隐藏层和一个输出层。输入层有9个节点，分别对应9个特征；第一个隐藏层有8个节点，第二个隐藏层有6个节点；输出层有4个节点，分别对应四类标签。每一层的神经元之间是全连接的。在这个网络中，共计使用\textbf{162}个参数。
+
+\begin{figure}[tb]
+    \centering 
+    \begin{tikzpicture}[
+        neuron/.style={circle, draw=black, minimum size=5mm, inner sep=0},
+        >=stealth,
+        node distance=1.5cm
+    ]
+        % 定义层参数：名称/数量/x位置
+        \def\layers{
+            Input/9/0, 
+            Linear1/8/2, 
+            Res1A/4/4, 
+            Res1B/8/6,
+            Output/4/8
+        }
+
+        % 绘制神经元
+        \foreach \layername/\layercount/\x in \layers {
+            \foreach \i in {1,...,\layercount} {
+                \node[neuron] (\layername-\i) at (\x, {\i*0.8 - \layercount*0.4 - 0.4}) {};
+            }
+            \node[anchor=north, align=center] at (\x, {-\layercount*0.4 - 0.6}) {\layername\\(\layercount)};
+        }
+
+        % Input → Linear1
+        \foreach \i in {1,...,9}{
+            \foreach \j in {1,...,8}{
+                \draw[->, gray!70] (Input-\i) -- (Linear1-\j);
+            }
+        }
+
+        % Linear1 → Res1A
+        \foreach \i in {1,...,8}{
+            \foreach \j in {1,...,4}{
+                \draw[->, gray!70] (Linear1-\i) -- (Res1A-\j);
+            }
+        }
+
+        % Res1A → Res1B
+        \foreach \i in {1,...,4}{
+            \foreach \j in {1,...,8}{
+                \draw[->, gray!70] (Res1A-\i) -- (Res1B-\j);
+            }
+        }
+
+        % 残差连接（Linear1 → Res1B）：虚线
+        \foreach \i in {1,...,8}{
+            \draw[->, dashed, red!70] (Linear1-\i) -- (Res1B-\i);
+        }
+
+        % Res1B → Output
+        \foreach \i in {1,...,8}{
+            \foreach \j in {1,...,4}{
+                \draw[->, gray!70] (Res1B-\i) -- (Output-\j);
+            }
+        }
+
+    \end{tikzpicture}	
+    \caption{SmallResNet 网络结构（含残差连接）}
+    \label{fig:SmallResNet}
+\end{figure}
 
 
+另一方面，我们还实现了一个小型的残差网络（smallResNet）如图\ref{fig:SmallResNet}所示，以期能取得更好的效果。该网络大体结构与smallMLP相同，但对于残差连接结构，使用了$8\rightarrow4\rightarrow8$的结构。Linear1层的输出结果，会直接与Res1A层的输出结果相加，作为Res1B层的输入，即图\ref{fig:SmallResNet}中的红色虚线所示。在这个网络中，共计使用\textbf{192}个参数。
 
 \subsection{性能评估}
-使用残差网络与多层感知机对数据集进行训练，得到如下所示实验结果
+
+使用多层感知机与残差网络对数据集进行训练，得到如表\ref{tab:Classic Model Training Results}所示的实验结果。
 
 \begin{table}[H]
 \centering
-\caption{Training Results of Using Data Augmentation}
-\label{tab:training_results_aug}
-\begin{tabular}{cccc}
+\caption{经典模型的训练结果}
+\label{tab:Classic Model Training Results}
+\begin{tabular}{ccccc}
     \toprule
-    \textbf{Epoch} & \textbf{Scheduler} & \textbf{Train Accuracy} & \textbf{Valid Accuracy} \\
+    \textbf{迭代次数} & \textbf{经典模型} & \textbf{训练准确率} & \textbf{测试准确率} & \textbf{测试F1分数} \\
     \midrule
-    \multirow{2}{*}{50} & SmallMLP & 87.20\% & 85.60\% \\
-     & SmallResNet & 87.23\% & 85.60\% \\
+    \multirow{2}{*}{50} & SmallMLP & 69.55\% & 66.10\% & 0.3993 \\
+        & SmallResNet & 74.37\% & 75.30\% & 0.5564 \\
+    \midrule
+    \multirow{2}{*}{250} & SmallMLP & 86.98\% & 85.60\% & 0.6645 \\
+        & SmallResNet & 87.02\% & 85.50\% & 0.6632 \\
+    \midrule
+    \multirow{2}{*}{500} & SmallMLP & 87.15\% & 85.50\% & 0.6635 \\
+        & SmallResNet & 87.37\% & 85.80\% & 0.6662 \\
     \bottomrule
 \end{tabular}
 \end{table}
 
-根据实验结果可知在固定参数大小下，经典的神经网络模型ResNet与MLP的实验精度基本一样，使用更复杂的ResNet模型对实验的结果精度并未产生较大提升。从模型理论上看，由于更复杂的模型(ResNet)在提出的时候往往是解决增加模型参数却不能极大提高准确率的问题，而在该任务中所用经典参数较少，并未达到MLP的模型性能极限，因此使用ResNet并未提升较大精度。
+根据实验结果可知，在固定参数大小下，经典的神经网络模型ResNet与MLP的实验精度基本一样，使用更复杂的ResNet模型对实验的结果精度并未产生较大提升。从模型理论上看，由于更复杂的模型(ResNet)在提出的时候往往是解决增加模型参数却不能极大提高准确率的问题，而在该任务中所用经典参数较少，并未达到MLP的模型性能极限，因此使用ResNet并未提升较大精度。
 
 由以上实验分析，我们可以提出如下假设：在固定参数下，存在经典模型并未超出其性能极限，即在固定参数下更改模型并不能提升预测精度。在此假设下，我们希望存在某种模型能够在原有经典模型的基础上，能进一步较大提升模型的预测精度，从而减少模型的参数量，进而提高模型的计算效率。
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{量子机器学习模型}
 
 \subsection{算法原理}
+
+在本次报告中，我们实现的量子机器学习模型为QMLP（Quantum Multi-Layer Perceptron）。QMLP是基于变分量子算法的量子神经网络模型，主要由以下几个部分组成：
+
 \subsubsection{量子数据编码}
-采用线性旋转编码将经典数据映射到量子态：
+
+QMLP采用线性旋转编码将经典数据映射到量子态：
+
 \begin{equation}
 S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma_x^{(k)}/2\right)
 \end{equation}
-其中$\sigma_x^{(k)}$为第$k$个量子比特的Pauli-X算符。
+其中$\sigma_x^{(k)}$为第$k$个量子比特的Pauli-X算符。这个电路都构造非常简单，如图\ref{fig:Quantum Circuits}左图所示。
 
-\begin{figure}[H]
+\begin{figure}[tb]
 \centering
-\begin{quantikz}
-\lstick{$\ket{0}$} & \gate{RX(x_1)} & \qw \\
-\lstick{$\ket{0}$} & \gate{RX(x_2)} & \qw \\
-& \vdots & \\
-\lstick{$\ket{0}$} & \gate{RX(x_N)} & \qw
-\end{quantikz}
-\caption{量子数据编码电路}
-\label{fig:qencode}
+    \begin{quantikz}
+        \lstick{$\ket{0}$} & \gate{RX(x_1)} & \\
+        \lstick{$\ket{0}$} & \gate{RX(x_2)} & \\
+        \lstick{$\vdots$} \wave&&& \\
+        \lstick{$\ket{0}$} & \gate{RX(x_N)} &
+    \end{quantikz}
+    \qquad
+    \begin{quantikz}
+        \lstick{$\ket{\psi_1}$} & \ctrl{1} & \gate{RX(\theta_1)} & \\
+        \lstick{$\ket{\psi_2}$} & \targ{} & \gate{RY(\theta_2)} &
+    \end{quantikz}
+\caption{左：量子数据编码电路；右：参数化纠缠层电路}
+\label{fig:Quantum Circuits}
 \end{figure}
 
 \subsubsection{变分量子电路}
+
 \begin{equation}
-U(\theta) = \prod_{l=1}^L U_l(\theta_l)R_l(\mathbf{x})
+    U(\theta) = \prod_{l=1}^L U_l(\theta_l)R_l(\mathbf{x})
 \end{equation}
+
 其中：
 \begin{itemize}
-\item $U_l(\theta_l)$：参数化量子门层
-\item $R_l(\mathbf{x})$：重上传单元
+    \item $U_l(\theta_l)$：参数化量子门层
+    \item $R_l(\mathbf{x})$：重上传单元
 \end{itemize}
 
 \subsubsection{动态非线性机制}
+
 通过可调重上传单元(RUU)引入非线性：
+
 \begin{equation}
-R_l(\mathbf{x}) = \exp\left(-i f_l(\mathbf{x}) \sigma_j^{(k)}/2\right), \quad j \in \{x,y,z\}
+    R_l(\mathbf{x}) = \exp\left(-i f_l(\mathbf{x}) \sigma_j^{(k)}/2\right), \quad j \in \{x,y,z\}
 \end{equation}
+
 典型配置包括：
+
 \begin{itemize}
-\item $RX(\text{ReLU}(\mathbf{x}))$
-\item $RY(\mathbf{x}^2)$
-\item $RZ(\tanh(\mathbf{x}))$
+    \item $RX(\text{ReLU}(\mathbf{x}))$
+    \item $RY(\mathbf{x}^2)$
+    \item $RZ(\tanh(\mathbf{x}))$
 \end{itemize}
 
 
 \subsubsection{参数化纠缠层}
-采用可训练的两比特门实现自适应纠缠：
+
+采用可训练的两比特门实现自适应纠缠，电路如图\ref{fig:Quantum Circuits}右图所示。
+
 \begin{equation}
-CRX(\theta) = \begin{pmatrix}
-1 & 0 & 0 & 0 \\
-0 & 1 & 0 & 0 \\
-0 & 0 & \cos\theta/2 & -i\sin\theta/2 \\
-0 & 0 & -i\sin\theta/2 & \cos\theta/2 
-\end{pmatrix}
+    CRX(\theta) = \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & \cos\theta/2 & -i\sin\theta/2 \\
+    0 & 0 & -i\sin\theta/2 & \cos\theta/2 
+    \end{pmatrix}
 \end{equation}
 
-\begin{figure}[H]
-\centering
-\begin{quantikz}
-\lstick{$\ket{\psi_1}$} & \ctrl{1} & \gate{RX(\theta_1)} & \qw \\
-\lstick{$\ket{\psi_2}$} & \targ{} & \gate{RY(\theta_2)} & \qw
-\end{quantikz}
-\caption{参数化纠缠层电路}
-\label{fig:entangle}
-\end{figure}
 \begin{algorithm}
     \caption{QMLP训练流程}
     \begin{algorithmic}[1]
@@ -432,6 +510,7 @@ CRX(\theta) = \begin{pmatrix}
     \EndFor
     \end{algorithmic}
 \end{algorithm}
+
 \begin{figure}[htbp]
     \centering
     \smartdiagram[flow diagram:horizontal]{
@@ -443,7 +522,8 @@ CRX(\theta) = \begin{pmatrix}
     }
     \caption{QMLP算法流程图}
     \label{fig:qmlp_flow_smart}
-    \end{figure}
+\end{figure}
+
 \subsection{实现细节}
 
 \subsection{性能评估}
