@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  7 MAY 2025 01:28
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  7 MAY 2025 22:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1215,12 +1215,12 @@ Package rerunfilecheck Info: File `problem2.out' has not changed.
 (rerunfilecheck)             Checksum: C1A4B5B169707F434A33723C1A4BCA57;2034.
  ) 
 Here is how much of TeX's memory you used:
- 38651 strings out of 476719
- 854509 string characters out of 5800829
- 1991842 words of memory out of 5000000
- 59901 multiletter control sequences out of 15000+600000
+ 39431 strings out of 476719
+ 872611 string characters out of 5800829
+ 1990842 words of memory out of 5000000
+ 60681 multiletter control sequences out of 15000+600000
  623609 words of font info for 181 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  93i,19n,99p,1951b,1582s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on problem2.xdv (6 pages, 284608 bytes).
+Output written on problem2.xdv (6 pages, 368368 bytes).

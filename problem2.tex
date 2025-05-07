@@ -449,7 +449,7 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
     \qquad
     \begin{quantikz}
         \lstick{$\ket{\psi_1}$} & \ctrl{1} & \gate{RX(\theta_1)} & \\
-        \lstick{$\ket{\psi_2}$} & \targ{} & \gate{RY(\theta_2)} &
+        \lstick{$\ket{\psi_2}$} & \targ{}{} & \gate{RY(\theta_2)} &
     \end{quantikz}
 \caption{左：量子数据编码电路；右：参数化纠缠层电路}
 \label{fig:Quantum Circuits}
@@ -525,6 +525,86 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 \end{figure}
 
 \subsection{实现细节}
+
+\begin{figure}[tb]
+    \centering
+    \begin{tikzpicture}[
+        neuron/.style={circle, draw=black, minimum size=5mm, inner sep=0},
+        quantum/.style={rectangle, draw=purple!70, fill=purple!10, minimum width=3cm, minimum height=1.5cm, rounded corners, align=center},
+        >=stealth,
+        every label/.style={text width=2cm, align=center}
+    ]
+
+        % 定义各层节点数及间距
+        \def\inputN{9}
+        \def\linearN{4}
+        \def\outputN{4}
+        \def\dy{0.6}  % 垂直间距
+
+        % 计算最大层数以居中对齐
+        \pgfmathsetmacro{\maxN}{max(\inputN,\linearN,\outputN)}
+        \pgfmathsetmacro{\centerY}{(\maxN - 1) * \dy / 2}
+
+        % Input layer
+        \foreach \i in {1,...,\inputN} {
+            \pgfmathsetmacro{\y}{(\i - 1) * \dy - (\inputN - 1) * \dy / 2}
+            \node[neuron] (input-\i) at (0, \y) {};
+        }
+        \node[align=center] at (0, -\centerY - 0.7) {Input\\(\inputN)};
+
+        % Linear layer
+        \foreach \i in {1,...,\linearN} {
+            \pgfmathsetmacro{\y}{(\i - 1) * \dy - (\linearN - 1) * \dy / 2}
+            \node[neuron] (linear-\i) at (2.5, \y) {};
+        }
+        \node[align=center] at (2.5, -\centerY - 0.7) {Linear\\(\linearN)};
+
+        % Quantum Circuit block（居中即可）
+        \node[quantum] (quantum) at (5.5, 0) {Quantum Circuit\\(32 params)};
+        \node at (5.5, -\centerY - 0.7) {QMLP};
+
+        % Output layer
+        \foreach \i in {1,...,\outputN} {
+            \pgfmathsetmacro{\y}{(\i - 1) * \dy - (\outputN - 1) * \dy / 2}
+            \node[neuron] (output-\i) at (8.5, \y) {};
+        }
+        \node[align=center] at (8.5, -\centerY - 0.7) {Output\\(\outputN)};
+
+        % Input → Linear
+        \foreach \i in {1,...,\inputN}{
+            \foreach \j in {1,...,\linearN}{
+                \draw[->, gray!60] (input-\i) -- (linear-\j);
+            }
+        }
+
+        % Linear → Quantum
+        \foreach \i in {1,...,\linearN}{
+            \draw[->, thick, gray!70] (linear-\i) -- (quantum);
+        }
+
+        % Quantum → Output
+        \foreach \i in {1,...,\outputN}{
+            \draw[->, thick, gray!70] (quantum) -- (output-\i);
+        }
+
+    \end{tikzpicture} \\
+    \begin{quantikz}[row sep=0.5cm, column sep=0.5cm]
+        \lstick{$q_0$} & \gate{R_x(x_0)} & \gate{Rot(\theta_0\sim\theta_2)} & \ctrl{1} & \gate{R_x(x_0)} & \gate{Rot(\theta_{16}\sim\theta_{18})} & \ctrl{1} & \meter{} \\
+        \lstick{$q_1$} & \gate{R_x(x_1)} & \gate{Rot(\theta_3\sim\theta_5)} & \targ{}   & \gate{R_x(x_1)} & \gate{Rot(\theta_{19}\sim\theta_{21})} & \targ{}   & \meter{} \\
+        \lstick{$q_2$} & \gate{R_x(x_2)} & \gate{Rot(\theta_6\sim\theta_8)} & \ctrl{1} & \gate{R_x(x_2)} & \gate{Rot(\theta_{22}\sim\theta_{24})} & \ctrl{1} & \meter{} \\
+        \lstick{$q_3$} & \gate{R_x(x_3)} & \gate{Rot(\theta_9\sim\theta_{11})} & \targ{}   & \gate{R_x(x_3)} & \gate{Rot(\theta_{25}\sim\theta_{27})} & \targ{}   & \meter{} \\
+    \end{quantikz}    
+    \caption{\centering 上图：QuantumMLP 网络结构图：线性映射 + 参数化量子电路 + 测量输出\\ 下图：参数化量子电路}
+    \label{fig:QuantumMLP}
+\end{figure}
+
+% \begin{quantikz}[row sep=0.5cm, column sep=0.5cm]
+%     \lstick{$q_0$} & \gate{R_x(x_0)} & \gate{Rot(\theta_0)} & \ctrl{1} & \gate{R_x(x_0)} & \gate{Rot(\theta_1)} & \ctrl{1} & \meter{} \\
+%     \lstick{$q_1$} & \gate{R_x(x_1)} & \gate{Rot(\theta_3)} & \targ{} & \gate{R_x(x_1)} & \gate{Rot(\theta_4)} & \targ{} & \meter{} \\
+%     \lstick{$q_2$} & \gate{R_x(x_2)} & \gate{Rot(\theta_6)} & \ctrl{1} & \gate{R_x(x_2)} & \gate{Rot(\theta_7)} & \ctrl{1} & \meter{} \\
+%     \lstick{$q_3$} & \gate{R_x(x_3)} & \gate{Rot(\theta_9)} & \targ{} & \gate{R_x(x_3)} & \gate{Rot(\theta_{10})} & \targ{} & \meter{}
+% \end{quantikz}
+
 
 \subsection{性能评估}
 
