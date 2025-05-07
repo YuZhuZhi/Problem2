@@ -511,7 +511,7 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
     \end{algorithmic}
 \end{algorithm}
 
-\begin{figure}[htbp]
+\begin{figure}[tb]
     \centering
     \smartdiagram[flow diagram:horizontal]{
         输入$\mathbf{x}$,
@@ -525,6 +525,8 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 \end{figure}
 
 \subsection{实现细节}
+
+出于效率的考量，我们采用了量子经典混合的架构，即首先由经典神经网络将9维的输入降维到4维，之后将这些数据输入到QMLP中，最后的测量结果就是输出。整个架构如图\ref{fig:QuantumMLP}上图所示，而其中的"Quantum Circuit"部分具体如图\ref{fig:QuantumMLP}下图所示。
 
 \begin{figure}[tb]
     \centering
