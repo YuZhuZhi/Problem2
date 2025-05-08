@@ -426,16 +426,49 @@
 
 \subsection{算法原理}
 
-在本次报告中，我们实现的量子机器学习模型为QMLP（Quantum Multi-Layer Perceptron）\cite{chu2022qmlperrortolerantnonlinearquantum}。QMLP是基于变分量子算法的量子神经网络模型，主要由以下几个部分组成：
+\begin{algorithm}[H]
+    \caption{QMLP训练流程}
+    \label{alg:qmlp_train}
+    \begin{algorithmic}[1]
+    \State 初始化参数$\{\theta_l\}_{l=1}^L$和$\{f_l\}_{l=1}^L$
+    \For{每个训练epoch}
+        \State 编码输入：$\ket{\phi_0} = S(\mathbf{x})\ket{0}^{\otimes N}$
+        \State 量子态演化：$\ket{\phi_L} = \prod_{l=1}^L U_l(\theta_l)\ket{\phi_0}$
+        \State 参数化纠缠: $\ket{\phi_L} = \bigotimes_{m=1}^{N/2} CRX(\phi_m)\ket{\phi_L}$
+        \State 重传：$\ket{\phi_L} = R_l(\mathbf{x})\ket{\phi_L}$
+        \State 测量期望值：$\langle Z\rangle_i = \bra{\phi_L} Z_i \ket{\phi_L}$
+        \State 计算损失：$\mathcal{L} = -\sum_c y_c \log p_c$
+        \State 通过参数偏移规则更新参数
+    \EndFor
+    \end{algorithmic}
+\end{algorithm}
 
+\begin{figure}[htbp]
+    \centering
+    \smartdiagram[flow diagram:horizontal]{
+        输入$\mathbf{x}$,
+        线性编码,
+        变分层1,
+        参数化纠缠,
+        RUU重传,
+        变分层2,
+        输出测量和优化
+    }
+    \caption{QMLP算法流程图}
+    \label{fig:qmlp_flow_smart}
+\end{figure}
+在本次报告中，我们实现的量子机器学习模型为QMLP（Quantum Multi-Layer Perceptron），流程如算法\ref{alg:qmlp_train}和图\ref{fig:qmlp_flow_smart}所示。
+
+QMLP是基于变分量子算法的量子神经网络模型，主要由以下几个部分组成：
 \subsubsection{量子数据编码}
 
 QMLP采用线性旋转编码将经典数据映射到量子态：
 
 \begin{equation}
-S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma_x^{(k)}/2\right)
+S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k)
+    \label{eq:linear_encoding}
 \end{equation}
-其中$\sigma_x^{(k)}$为第$k$个量子比特的Pauli-X算符。这个电路都构造非常简单，如图\ref{fig:Quantum Circuits}左图所示。
+这个电路都构造非常简单，如图\ref{fig:Quantum Circuits}左图所示。由此我们将经典数据映射到量子态，同时通过单比特旋转门独立编码每个输入特征,达到抑制噪声传播的目的。
 
 \begin{figure}[tb]
 \centering
@@ -455,73 +488,41 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 \end{figure}
 
 \subsubsection{变分量子电路}
-
+在对输入进行量子编码后，便可以对其应用式\ref{eq:variational_circuit}对应的变分量子电路进行参数化幺正变换(类似于经典神经网络中的权重矩阵乘法)。
 \begin{equation}
-    U(\theta) = \prod_{l=1}^L U_l(\theta_l)R_l(\mathbf{x})
+    \ket{\phi_L} = \prod_{l=1}^L U_l(\theta_l)\ket{\phi_0}
+    \label{eq:variational_circuit}
 \end{equation}
-
-其中：
-\begin{itemize}
-    \item $U_l(\theta_l)$：参数化量子门层
-    \item $R_l(\mathbf{x})$：重上传单元
-\end{itemize}
-
-\subsubsection{动态非线性机制}
-
-通过可调重上传单元(RUU)引入非线性：
-
+$U_l(\theta_l)$表示由一组可训练参数$\theta_l$控制的幺正变换,$\ket{\phi_0}$表示编码后的输入态。\\
+然后相邻量子比特之间应用CRX门(式\ref{eq:entanglement})创建纠缠,增强局部关联性。电路如图\ref{fig:Quantum Circuits}右图所示。
 \begin{equation}
-    R_l(\mathbf{x}) = \exp\left(-i f_l(\mathbf{x}) \sigma_j^{(k)}/2\right), \quad j \in \{x,y,z\}
+    \ket{\phi_L} = \bigotimes_{m=1}^{N/2} CRX(\phi_m)\ket{\phi_L}
+    \label{eq:entanglement}
 \end{equation}
-
-典型配置包括：
-
-\begin{itemize}
-    \item $RX(\text{ReLU}(\mathbf{x}))$
-    \item $RY(\mathbf{x}^2)$
-    \item $RZ(\tanh(\mathbf{x}))$
-\end{itemize}
-
-
-\subsubsection{参数化纠缠层}
-
-采用可训练的两比特门实现自适应纠缠，电路如图\ref{fig:Quantum Circuits}右图所示。
-
+CRX门的矩阵表达为式\ref{eq:crx}。
 \begin{equation}
     CRX(\theta) = \begin{pmatrix}
     1 & 0 & 0 & 0 \\
     0 & 1 & 0 & 0 \\
     0 & 0 & \cos\theta/2 & -i\sin\theta/2 \\
     0 & 0 & -i\sin\theta/2 & \cos\theta/2 
+    \label{eq:crx}
     \end{pmatrix}
 \end{equation}
+\subsubsection{重上传单元}
+接着对每一位输入进行重传(式\ref{eq:ruu}),重复注入编码层$S(\mathbf{x})$在变分电路中生成输入的高阶项引入非线性(类似于经典电路的激活函数)，增强量子神经网络的表达能力。
+\begin{equation}
+    \ket{\phi_L} = R_l(\mathbf{x})\ket{\phi_L}
+    \label{eq:ruu}
+\end{equation}
+$R_l$表示所用的重传单元如$RX$,$RY$门
+\subsubsection{测量与优化}
+通过Pauli-Z基测量(式\ref{eq:measurement})将处理后的量子态转换为经典可读信号,然后便可应用经典方法如Adam优化算法等对模型参数进行优化。
+\begin{equation}
+    \langle Z_i \rangle = \bra{\phi_L} Z_i \ket{\phi_L} \in [-1, 1]
+    \label{eq:measurement}
+\end{equation}
 
-\begin{algorithm}
-    \caption{QMLP训练流程}
-    \begin{algorithmic}[1]
-    \State 初始化参数$\{\theta_l\}_{l=1}^L$和$\{f_l\}_{l=1}^L$
-    \For{每个训练epoch}
-        \State 编码输入：$\ket{\phi_0} = S(\mathbf{x})\ket{0}^{\otimes N}$
-        \State 量子态演化：$\ket{\phi_L} = \prod_{l=1}^L U_l(\theta_l) R_l(f_l) \ket{\phi_0}$
-        \State 测量期望值：$\langle Z\rangle_i = \bra{\phi_L} Z_i \ket{\phi_L}$
-        \State 计算损失：$\mathcal{L} = -\sum_c y_c \log p_c$
-        \State 通过参数偏移规则更新参数
-    \EndFor
-    \end{algorithmic}
-\end{algorithm}
-
-\begin{figure}[tb]
-    \centering
-    \smartdiagram[flow diagram:horizontal]{
-        输入$\mathbf{x}$,
-        线性编码,
-        \shortstack{变分层1\\\footnotesize(RUU非线性)},
-        参数化纠缠,
-        \shortstack{变分层2\\\footnotesize(输出测量)}
-    }
-    \caption{QMLP算法流程图}
-    \label{fig:qmlp_flow_smart}
-\end{figure}
 
 \subsection{实现细节}
 
@@ -678,7 +679,31 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 通过上表我们得知，混合了经典MLP与量子MLP的模型，在使用参数量远远小于经典小型ResNet的情况下，取得了更好的训练准确率、测试准确率和F1分数。我们可以认为，量子MLP在该数据集上取得了比经典MLP更好的性能。
 
 \subsection{差异分析}
-
+\begin{table}[H]
+    \centering
+    \caption{量子与经典神经网络核心组件对比}
+    \label{tab:quantum_classical}
+    \begin{tabular}{ccccc}
+        \toprule
+        \textbf{功能} & \textbf{经典神经网络组件} & \textbf{QMLP组件} \\
+        \midrule
+        输入编码 & 数据标准化层 & 单比特旋转门编码 \\
+        & $\mathbf{x} \in \mathbb{R}^n \to \text{Norm}(\mathbf{x})$ & $S(\mathbf{x}) = \bigotimes_k RX(x_k)$ \\
+        \midrule
+        特征变换 & 全连接层 & 变分量子电路 \\
+        & $W\mathbf{x} + \mathbf{b}$ & $U(\theta)\ket{\phi}$ \\
+        \midrule
+        非线性引入 & 激活函数 & 数据重上传单元(RUU) \\
+        & $\text{ReLU}(x)=\max(0,x)$ & $R_l(\mathbf{x}) = RX(f_l(\mathbf{x}))$ \\
+        \midrule
+        参数优化 & 梯度下降 & 参数偏移规则 \\
+        & $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}$ & $\nabla_\theta \langle Z\rangle \approx \frac{\langle Z\rangle_{\theta+\delta} - \langle Z\rangle_{\theta-\delta}}{2}$ \\
+        \midrule
+        输出处理 & Softmax分类层 & Pauli-Z测量 \\
+        & $p_c = \frac{e^{y_c}}{\sum e^{y_i}}$ & $\langle Z\rangle_i = \bra{\psi}Z_i\ket{\psi}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{总结}
