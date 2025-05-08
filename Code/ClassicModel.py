@@ -22,7 +22,7 @@ class SmallResNet(vqn.nn.Module):
         def forward(self, x: QTensor) -> QTensor:
             # x.to(DEVICE)
             residual = x
-            x = relu(self.linear1(x))
+            x = self.relu(self.linear1(x))
             x = self.linear2(x)
             x = x + residual
             return self.relu(x)

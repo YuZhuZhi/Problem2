@@ -1,4 +1,3 @@
-from turtle import forward
 import Utils
 import numpy as np
 
