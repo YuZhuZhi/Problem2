@@ -118,10 +118,9 @@
 
 %%%%%导言内容%%%%%
 \title{\heiti \zihao{-2} 空气质量四分类任务：经典与量子机器学习模型设计与性能分析}%标题内容
-\author{\kaishu \zihao{4} 作者\textsuperscript{1}，作者\textsuperscript{2}}%作者姓名
-\date{{\kaishu \zihao{5} （1.作者详细单位，省 市 邮编；2.作者详细单位，省 市 邮编；）}\\
-\textsuperscript{1}~{\kaishu \zihao{5} 作者详细单位，省 市 邮编；} 
-\textsuperscript{2}~{\kaishu \zihao{5} 作者详细单位，省 市 邮编；}}%将作者单位信息塞入日期栏
+% \author{\kaishu \zihao{4} 作者\textsuperscript{1}，作者\textsuperscript{2}}%作者姓名
+\author{\kaishu \zihao{4} 跃迁元\textsuperscript{1}\\王俊亚，韩睿勍，陈兴平，陈华林}%作者姓名
+\date{\textsuperscript{1}~{\kaishu \zihao{5} 中山大学，广东省 广州市 510006；} }%将作者单位信息塞入日期栏
 
 
 %%%%%%%%%%%%%%%%%%%%文章部分%%%%%%%%%%%%%%%%%%%%
@@ -526,7 +525,7 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 
 \subsection{实现细节}
 
-出于效率的考量，我们采用了量子经典混合的架构，即首先由经典神经网络将9维的输入降维到4维，之后将这些数据输入到QMLP中，最后的测量结果就是输出。整个架构如图\ref{fig:QuantumMLP}之子图1所示，而其中的"Quantum Circuit"部分具体如图\ref{fig:QuantumMLP}之子图2所示。在子图2中，$Rot(\theta_{i}\sim\theta_{i+2})$表示了一套需要三个量子参数的$RX,RY,RZ$门组合，而四个相连受控位表示一套$CRX$门组合，需要四个量子参数。显而易见，在这个架构中，经典参数量为$9\times4+4=40$，而量子参数量为$8\times3+2\times4=32$个，总共\textbf{72}个参数。
+出于效率的考量，我们采用了量子经典混合的架构，即首先由经典神经网络将9维的输入降维到4维，之后将这些数据输入到QMLP中，最后的测量结果就是输出。整个架构如图\ref{fig:QuantumMLP}之子图1所示，而其中的"Quantum Circuit"部分具体如图\ref{fig:QuantumMLP}之子图2所示。在子图2中，$Rot(\theta_{i}\sim\theta_{i+2})$表示了一套需要三个量子参数的$RX,RY,RZ$门组合，而四个相连受控位表示一套$CRX$门组合，需要四个量子参数，分别如图\ref{fig:QuantumMLP}之子图3,4所示。显而易见，在这个架构中，经典参数量为$9\times4+4=40$，而量子参数量为$8\times3+2\times4=32$个，总共\textbf{72}个参数。
 
 \begin{figure}[tb]
 \centering
@@ -642,6 +641,21 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 \section{性能对比与分析}
 
 \subsection{性能对比}
+
+\begin{table}[H]
+    \centering
+    \caption{经典机器学习与量子机器学习的性能对比}
+    \label{tab:Performance Comparison of Classical and Quantum Models}
+    \begin{tabular}{ccccc}
+        \toprule
+        \textbf{模型} & \textbf{参数量} & \textbf{训练准确率} & \textbf{测试准确率} & \textbf{测试F1分数} \\
+        \midrule
+        经典小型ResNet & 192 & 87.37\% & 85.80\% & 0.6662 \\
+        量子经典混合MLP & 72 & \% & \% & 0. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+    
 
 \subsection{差异分析}
 

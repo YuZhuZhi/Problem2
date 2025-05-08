@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  8 MAY 2025 17:45
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  8 MAY 2025 18:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -996,26 +996,26 @@ Package fontspec Info: Font family 'TimesNewRoman(0)' created for font 'Times
  (./problem2.aux)
 \openout1 = `problem2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 127.
+LaTeX Font Info:    ... okay on input line 127.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1056,7 +1056,7 @@ Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 128.
+Package hyperref Info: Link coloring ON on input line 127.
 (./problem2.out) (./problem2.out)
 \@outlinefile=\write4
 \openout4 = `problem2.out'.
@@ -1131,30 +1131,30 @@ Package fontspec Info: Font family 'KaiTi(0)' created for font 'KaiTi' with
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.05249> on input line 135.
+(Font)              <14.05249> on input line 134.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.53937> on input line 135.
+(Font)              <10.53937> on input line 134.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7.52812> on input line 135.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 135.
+(Font)              <7.52812> on input line 134.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 134.
  (d:/Latex/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 135.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 134.
  (d:/Latex/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 135.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 134.
  (d:/Latex/texlive/2024/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <10.53937> not available
-(Font)              size <10.95> substituted on input line 135.
+(Font)              size <10.95> substituted on input line 134.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <7.52812> not available
-(Font)              size <8> substituted on input line 135.
+(Font)              size <8> substituted on input line 134.
 
 
 Package fontspec Info: Could not resolve font "FangSong/BI" (it probably
@@ -1184,23 +1184,24 @@ Package fontspec Info: Font family 'FangSong(0)' created for font 'FangSong'
 ]
 
 LaTeX Font Warning: Font shape `TU/SimSun(1)/b/n' undefined
-(Font)              using `TU/SimSun(1)/m/n' instead on input line 247.
+(Font)              using `TU/SimSun(1)/m/n' instead on input line 246.
 
 [2] [3] [4]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 501.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 500.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 522.
+(Font)              <9> on input line 521.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 522.
+(Font)              <6> on input line 521.
 
-Overfull \hbox (6.5393pt too wide) in paragraph at lines 522--522
+Overfull \hbox (6.5393pt too wide) in paragraph at lines 521--521
  [][][] 
  []
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9.03374> on input line 626.
+(Font)              <9.03374> on input line 625.
+[5]
 No file problem2.bbl.
-[5] [6] (./problem2.aux)
+[6] [7] (./problem2.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2022/07/14>
@@ -1217,12 +1218,12 @@ Package rerunfilecheck Info: File `problem2.out' has not changed.
 (rerunfilecheck)             Checksum: C1A4B5B169707F434A33723C1A4BCA57;2034.
  ) 
 Here is how much of TeX's memory you used:
- 40118 strings out of 476719
- 889744 string characters out of 5800829
+ 40110 strings out of 476719
+ 889196 string characters out of 5800829
  2029842 words of memory out of 5000000
- 61368 multiletter control sequences out of 15000+600000
+ 61360 multiletter control sequences out of 15000+600000
  631226 words of font info for 189 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  93i,20n,99p,1951b,1582s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on problem2.xdv (6 pages, 428076 bytes).
+Output written on problem2.xdv (7 pages, 430352 bytes).
