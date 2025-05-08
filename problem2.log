@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  8 MAY 2025 00:45
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.15)  8 MAY 2025 17:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1197,6 +1197,8 @@ Overfull \hbox (6.5393pt too wide) in paragraph at lines 522--522
  [][][] 
  []
 
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9.03374> on input line 626.
 No file problem2.bbl.
 [5] [6] (./problem2.aux)
  ***********
@@ -1215,12 +1217,12 @@ Package rerunfilecheck Info: File `problem2.out' has not changed.
 (rerunfilecheck)             Checksum: C1A4B5B169707F434A33723C1A4BCA57;2034.
  ) 
 Here is how much of TeX's memory you used:
- 39431 strings out of 476719
- 872611 string characters out of 5800829
- 1990842 words of memory out of 5000000
- 60681 multiletter control sequences out of 15000+600000
- 623609 words of font info for 181 fonts, out of 8000000 for 9000
+ 40118 strings out of 476719
+ 889744 string characters out of 5800829
+ 2029842 words of memory out of 5000000
+ 61368 multiletter control sequences out of 15000+600000
+ 631226 words of font info for 189 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 93i,19n,99p,1951b,1582s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,20n,99p,1951b,1582s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on problem2.xdv (6 pages, 370700 bytes).
+Output written on problem2.xdv (6 pages, 428076 bytes).

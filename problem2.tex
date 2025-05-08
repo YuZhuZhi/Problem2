@@ -526,10 +526,10 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 
 \subsection{实现细节}
 
-出于效率的考量，我们采用了量子经典混合的架构，即首先由经典神经网络将9维的输入降维到4维，之后将这些数据输入到QMLP中，最后的测量结果就是输出。整个架构如图\ref{fig:QuantumMLP}上图所示，而其中的"Quantum Circuit"部分具体如图\ref{fig:QuantumMLP}下图所示。
+出于效率的考量，我们采用了量子经典混合的架构，即首先由经典神经网络将9维的输入降维到4维，之后将这些数据输入到QMLP中，最后的测量结果就是输出。整个架构如图\ref{fig:QuantumMLP}之子图1所示，而其中的"Quantum Circuit"部分具体如图\ref{fig:QuantumMLP}之子图2所示。在子图2中，$Rot(\theta_{i}\sim\theta_{i+2})$表示了一套需要三个量子参数的$RX,RY,RZ$门组合，而四个相连受控位表示一套$CRX$门组合，需要四个量子参数。显而易见，在这个架构中，经典参数量为$9\times4+4=40$，而量子参数量为$8\times3+2\times4=32$个，总共\textbf{72}个参数。
 
 \begin{figure}[tb]
-    \centering
+\centering
     \begin{tikzpicture}[
         neuron/.style={circle, draw=black, minimum size=5mm, inner sep=0},
         quantum/.style={rectangle, draw=purple!70, fill=purple!10, minimum width=3cm, minimum height=1.5cm, rounded corners, align=center},
@@ -590,14 +590,41 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
         }
 
     \end{tikzpicture} \\
-    \begin{quantikz}[row sep=0.5cm, column sep=0.5cm]
-        \lstick{$q_0$} & \gate{R_x(x_0)} & \gate{Rot(\theta_0\sim\theta_2)} & \ctrl{1} & \gate{R_x(x_0)} & \gate{Rot(\theta_{16}\sim\theta_{18})} & \ctrl{1} & \meter{} \\
-        \lstick{$q_1$} & \gate{R_x(x_1)} & \gate{Rot(\theta_3\sim\theta_5)} & \targ{}   & \gate{R_x(x_1)} & \gate{Rot(\theta_{19}\sim\theta_{21})} & \targ{}   & \meter{} \\
-        \lstick{$q_2$} & \gate{R_x(x_2)} & \gate{Rot(\theta_6\sim\theta_8)} & \ctrl{1} & \gate{R_x(x_2)} & \gate{Rot(\theta_{22}\sim\theta_{24})} & \ctrl{1} & \meter{} \\
-        \lstick{$q_3$} & \gate{R_x(x_3)} & \gate{Rot(\theta_9\sim\theta_{11})} & \targ{}   & \gate{R_x(x_3)} & \gate{Rot(\theta_{25}\sim\theta_{27})} & \targ{}   & \meter{} \\
-    \end{quantikz}    
-    \caption{\centering 上图：QuantumMLP 网络结构图：线性映射 + 参数化量子电路 + 测量输出\\ 下图：参数化量子电路}
-    \label{fig:QuantumMLP}
+
+    % \vspace{0.1cm}
+    \noindent\makebox[\textwidth]{\dotfill}
+    \vspace{0.01cm}
+
+    \begin{quantikz}[row sep=0.3cm, column sep=0.5cm]
+        \lstick{$q_0$} & \gate{R_x(x_0)} & \gate{Rot(\theta_0\sim\theta_2)} & \ctrl[vertical wire=c]{3} & \gate{R_x(x_0)} & \gate{Rot(\theta_{16}\sim\theta_{18})} & \ctrl[vertical wire=c]{3} & \meter{} \\
+        \lstick{$q_1$} & \gate{R_x(x_1)} & \gate{Rot(\theta_3\sim\theta_5)} & \control{}   & \gate{R_x(x_1)} & \gate{Rot(\theta_{19}\sim\theta_{21})} & \control{}   & \meter{} \\
+        \lstick{$q_2$} & \gate{R_x(x_2)} & \gate{Rot(\theta_6\sim\theta_8)} & \control{} & \gate{R_x(x_2)} & \gate{Rot(\theta_{22}\sim\theta_{24})} & \control{} & \meter{} \\
+        \lstick{$q_3$} & \gate{R_x(x_3)} & \gate{Rot(\theta_9\sim\theta_{11})} & \control{}   & \gate{R_x(x_3)} & \gate{Rot(\theta_{25}\sim\theta_{27})} & \control{}   & \meter{} \\
+    \end{quantikz} \\
+
+    \noindent\makebox[\textwidth]{\dotfill}
+    \vspace{0.01cm}
+
+    \begin{quantikz}
+        & \gate{Rot((\theta_{i}\sim\theta_{i+2}))} & 
+    \end{quantikz} \quad=\quad \begin{quantikz}[column sep=0.1cm]
+        & \gate{RX(\theta_{i})} & \gate{RY(\theta_{i+1})} & \gate{RZ(\theta_{i+2})} & 
+    \end{quantikz} \\
+
+    \noindent\makebox[\textwidth]{\dotfill}
+    \vspace{0.01cm}
+
+    \begin{quantikz}
+        & \ctrl[vertical wire=c]{3} & \\ & \control{} & \\ & \control{} & \\ & \control{} &
+    \end{quantikz} \quad=\quad \begin{quantikz}[row sep=0.04cm, column sep=0.05cm]
+        & \ctrl{1} & & & \gate{RX(\theta_{i+3})} &\\
+        & \gate{RX(\theta_{i})} & \ctrl{1} & & & \\
+        & & \gate{RX(\theta_{i+1})} & \ctrl{1} & & \\
+        & & & \gate{RX(\theta_{i+2})} & \ctrl{-3} &
+    \end{quantikz}
+
+\caption{\centering 自上而下：子图1：QuantumMLP 网络结构图：线性映射 + 参数化量子电路 + 测量输出；\\ 子图2：参数化量子电路的具体实现；\\ 子图3：$Rot(\theta_{i}\sim\theta_{i+2})$门的具体实现；\\ 子图4：$CRX$门组合的具体实现。}
+\label{fig:QuantumMLP}
 \end{figure}
 
 % \begin{quantikz}[row sep=0.5cm, column sep=0.5cm]
@@ -657,10 +684,10 @@ S(\mathbf{x}) = \bigotimes_{k=1}^N RX(x_k) = \exp\left(-i\sum_{k=1}^N x_k \sigma
 %知网复制出的latex代码比工大图书馆复制出的latex代码好用
 
 %%%%%%%%%%%%%%%附录部分%%%%%%%%%%%%%%%
-\newpage
-\appendix%设置附录
-\zihao{-5}%设置附录字号
-\section*{附录一：}
+% \newpage
+% \appendix%设置附录
+% \zihao{-5}%设置附录字号
+% \section*{附录一：}
 
 
 
