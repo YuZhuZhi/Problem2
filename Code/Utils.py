@@ -171,6 +171,8 @@ class Draw:
             x: x轴数据列表，每个元素是一个一维数组
             y: y轴数据列表，每个元素是一个一维数组
             title: 每个子图的标题列表
+            xLabel: 每个子图的x轴标签列表
+            yLabel: 每个子图的y轴标签列表
         """
         for i in range(min(shape[0] * shape[1], len(x), len(y), len(title))):
             plt.subplot(shape[0], shape[1], i + 1)
@@ -179,7 +181,6 @@ class Draw:
             plt.xlabel(xLabel[i])
             plt.ylabel(yLabel[i])
             plt.grid()
-        
         plt.show()
 
 #####################################################################################################
